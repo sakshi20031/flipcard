@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Love Flip Card</title>
+  <meta name="robots" content="noindex">
+  <style>
+    body {
+      margin: 0;
+      background: #fff0f5;
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+    }
+
+    .float {
+      position: fixed;
+      z-index: 0;
+      animation: floatDown linear infinite;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .float.heart {
+      color: #ff4e50;
+    }
+
+    .float.flower {
+      font-size: 26px;
+    }
+
+    @keyframes floatDown {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 0.9;
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .scene {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 583px;
+      height: 414px;
+      perspective: 1000px;
+      z-index: 2;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-front img,
+    .card-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      position: relative;
+    }
+
+    .typewriter {
+      position: absolute;
+      top: 24%;
+      /* adjust based on your image layout */
+      left: 52%;
+      width: 76%;
+      height: 50%;
+      color: #d62828;
+      font-size: 1em;
+      line-height: 1.5;
+      white-space: pre-line;
+      overflow: hidden;
+      z-index: 3;
+    }
+
+    .burst-heart {
+      position: absolute;
+      font-size: 20px;
+      color: #ff69b4;
+      pointer-events: none;
+      animation: burst 1s ease-out forwards;
+      z-index: 5;
+    }
+
+    @keyframes burst {
+      0% {
+        transform: scale(0.5) translate(0, 0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1.5) translate(var(--x), var(--y));
+        opacity: 0;
+      }
+    }
+
+    /* Breathing heart animation */
+    .breathing-heart {
+      position: fixed;
+      font-size: 32px;
+      animation: breathe 2s ease-in-out forwards;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes breathe {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Music -->
+  <audio id="loveSong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto" loop></audio>
+
+  <!-- Card Scene -->
+  <div class="scene">
+    <div class="card" id="card">
+      <div class="card-face card-front">
+        <img src="https://i.imgur.com/mIkgWoT.png" alt="Front" />
+      </div>
+      <div class="card-face card-back">
+        <img src="https://i.imgur.com/1RZywDM.png" alt="Back" />
+        <div class="typewriter" id="typewriterText"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Script -->
+  <script>
+       const card = document.getElementById('card');
+    const typewriterText = document.getElementById('typewriterText');
+    const loveSong = document.getElementById('loveSong');
+    const message = `Happy Birthday, My Love 💖\nYou are my sunshine, my heartbeat,\nmy forever.\nThank you for being YOU.\nForever yours 💌`;
+    let isFlipped = false;
+    card.addEventListener('click', () => {
+      card.classList.toggle('is-flipped');
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        startTypewriter(message, typewriterText);
+        createHeartBurst(card);
+        loveSong.play().catch(() => {});
+      } else {
+        typewriterText.innerHTML = '';
+        loveSong.pause();
+        loveSong.currentTime = 0;
+      }
+    });
+
+    function startTypewriter(message, element) {
+      element.innerHTML = '';
+      let i = 0;
+
+      function type() {
+        if (i < message.length) {
+          element.innerHTML += message.charAt(i);
+          i++;
+          setTimeout(type, 40);
+        }
+      }
+      type();
+    }
+    // Heart explosion
+    function createHeartBurst(cardEl) {
+      const rect = cardEl.getBoundingClientRect();
+      for (let i = 0; i < 30; i++) {
+        const sparkle = document.createElement('span');
+        sparkle.classList.add('burst-heart');
+        sparkle.textContent = '💖';
+        sparkle.style.left = rect.left + rect.width / 2 + 'px';
+        sparkle.style.top = rect.top + rect.height / 2 + 'px';
+        sparkle.style.setProperty('--x', `${(Math.random() - 0.5) * 300}px`);
+        sparkle.style.setProperty('--y', `${(Math.random() - 0.5) * 300}px`);
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+      }
+    }
+    // Breathing heart generator
+    function spawnBreathingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'breathing-heart';
+      heart.innerText = '💗';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.top = Math.random() * 100 + 'vh';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }
+    // Generate breathing hearts every 1.5 seconds
+    setInterval(() => {
+      for (let i = 0; i < 3; i++) spawnBreathingHeart();
+    }, 500);
+    
+  </script>
+
+</body>
+
+</html>
