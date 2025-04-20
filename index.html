@@ -143,6 +143,24 @@
         width: 80%;
       }
     }
+
+    .sparkle {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: radial-gradient(circle, #fff 0%, #f0f0f0 40%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: sparkleFade 1s ease-out forwards;
+        z-index: 999;
+      }
+
+      @keyframes sparkleFade {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0.5); }
+      }
+
+
   </style>
 </head>
 
@@ -171,36 +189,28 @@
 
     const message = `
 🌟🎂 Happy Birthday my Dear आहो !! 🎂🌟 \n 
-
 आजचा दिवस स्पेशल आहे, 
 कारण तो "तुझा" दिवस आहे!! 🥳💖
 वाढदिवसाच्या खूप खूप शुभेच्छा ! 🎉🎈 \n
-
 तू माझ्या आयुष्यात आल्यापासून 
 सगळं काही जरा जास्तच 
 छान वाटायला लागलंय 💕✨
 तुझं हसणं 😄, तुझं रागावणं 😠 
 माझ्यासाठी special आहे 😍💌 \n
-
 तुझं माझा सोबत असणं ही,
 माझासाठी खास आहे ।।❤️♾️ \n
-
 माझं सगळं प्रेम – सगळा वेळ
 फक्त "तुझ्यासाठी" आहे ❤️♾️
 तू आहेस म्हणूनच माझं जग जिवंत वाटतं 🌍💑 \n
-
 आजच्या दिवशी एवढंच सांगते
 मी खूप खूप खूप खूप प्रेम करते तुझ्यावर! 🥺💘
 तू कायम माझ्या आयुष्यात असावास, 
 हेच मागणं आहे 🙏🌹 \n
-
 Once again… 
 Happy Birthday, my precious person 💖🎊 \n
-
 Lots of hugs 🤗, kisses 😘, 
 and endless love ♾️💞 \n
 Love You Sooooooooooo Much Baccha😘\n
-
 Forever yours, Sakshi 🥰💫
 `;
 
@@ -216,8 +226,8 @@ Forever yours, Sakshi 🥰💫
         createHeartBurst(card);
         loveSong.play().catch(() => {});
       } else {
-        clearTimeout(typewriterTimeout); // Clear any ongoing typing
-        typewriterText.innerHTML = ''; // Reset text
+        clearTimeout(typewriterTimeout);
+        typewriterText.innerHTML = '';
         loveSong.pause();
         loveSong.currentTime = 0;
       }
@@ -250,14 +260,13 @@ Forever yours, Sakshi 🥰💫
             final.className = 'type-line';
             typewriterText.appendChild(final);
           }
-           // ⏱️ Wait 3 seconds, then flip the card back
           setTimeout(() => {
             card.classList.remove('is-flipped');
             isFlipped = false;
             loveSong.pause();
             loveSong.currentTime = 0;
             typewriterText.innerHTML = '';
-          }, 3000); // Change delay here if you want
+          }, 3000);
         }
       }
 
@@ -286,12 +295,24 @@ Forever yours, Sakshi 🥰💫
       heart.style.left = Math.random() * 100 + 'vw';
       heart.style.top = Math.random() * 100 + 'vh';
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 2000);
+      setTimeout(() => heart.remove(), 3000);
     }
 
     setInterval(() => {
       for (let i = 0; i < 3; i++) spawnBreathingHeart();
     }, 500);
+
+    document.addEventListener('mousemove', (e) => {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    });
+
+
+
   </script>
 </body>
 
