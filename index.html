@@ -8,11 +8,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(-45deg, #f4b2cb, #f8dada, #e9d4eb, #f8c5d9);
-      background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
+      background-image: url('https://i.imgur.com/K9aryoi.png');
+      background-size:cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed; /* Keeps the image fixed even when content scrolls */
       overflow: hidden;
       margin: 0;
+      height: 100vh;
     }
 
     @keyframes gradientBG {
@@ -160,11 +163,21 @@
         100% { opacity: 0; transform: scale(0.5); }
       }
 
-
+      .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.3); /* or black with opacity for darker tone */
+        z-index: 0;
+      }
   </style>
 </head>
 
 <body>
+
+  <div class="bg-overlay"></div>
 
   <!-- Music -->
   <audio id="loveSong" src="happy_birthday.mp3" preload="auto" loop></audio>
