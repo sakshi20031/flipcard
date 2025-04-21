@@ -186,7 +186,7 @@
   <div class="scene">
     <div class="card" id="card">
       <div class="card-face card-front">
-        <img src="https://i.imgur.com/mIkgWoT.png" alt="Front" />
+        <img id="frontImage" src="https://i.imgur.com/mIkgWoT.png" alt="Front" />
       </div>
       <div class="card-face card-back">
         <img src="https://imgur.com/bbgsof7.png" alt="Back" />
@@ -279,6 +279,10 @@ Forever yours, Sakshi 🥰💫
             loveSong.pause();
             loveSong.currentTime = 0;
             typewriterText.innerHTML = '';
+            setTimeout(() => {
+              const frontImage = document.getElementById('frontImage');
+              frontImage.src = 'https://i.imgur.com/ZDRNLJk.png';
+            }, 1000);
           }, 3000);
         }
       }
@@ -304,7 +308,7 @@ Forever yours, Sakshi 🥰💫
     function spawnBreathingHeart() {
       const heart = document.createElement('div');
       heart.className = 'breathing-heart';
-      heart.innerText = '❤️';
+      heart.innerText = '💗';
       heart.style.left = Math.random() * 100 + 'vw';
       heart.style.top = Math.random() * 100 + 'vh';
       document.body.appendChild(heart);
